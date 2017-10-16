@@ -22,7 +22,7 @@ public class TwitterStream implements Runnable{
                     Tweet tweet = new Tweet(status.getId(), status.getUser().getScreenName(),
                             status.getText(), date, status.getGeoLocation());
 
-                    System.out.println(tweet.toString());
+                    //System.out.println(tweet.toString());
                     sendToDB(tweet);
                 }
             }
