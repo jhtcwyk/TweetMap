@@ -60,7 +60,7 @@
                 <configuration>  
                     <archive>  
                         <manifest>  
-                            <mainClass>com.amazonaws.TwittMap.Main</mainClass>  
+                            <mainClass>edu.nyu.TweetMap.Main</mainClass>  
                         </manifest>  
                     </archive>  
                     <descriptorRefs>  
