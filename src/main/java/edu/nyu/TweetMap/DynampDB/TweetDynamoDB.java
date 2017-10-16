@@ -27,7 +27,7 @@ public class TweetDynamoDB {
 	private static final DynamoDB dynamoDB;
 	private static final AWSCredentials credentials;
 	 static {
-		 credentials = new BasicAWSCredentials("AKIAJJTRE6OAHUKB6R5A", "wg4m1qao0/OLk65PAwoUgO9EVuvVkPdAtOwbpsll");
+		 credentials = new BasicAWSCredentials("", "");
 
 	        client = AmazonDynamoDBClientBuilder.standard()
 	        	.withCredentials(new AWSStaticCredentialsProvider(credentials))
