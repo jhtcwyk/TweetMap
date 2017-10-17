@@ -25,39 +25,38 @@ public class TweetDynamoDB {
 	
 	private static final AmazonDynamoDB client;
 	private static final DynamoDB dynamoDB;
-	private static final AWSCredentials credentials;
+	
 	 static {
-		 credentials = new BasicAWSCredentials("", "");
+		 
 
 	        client = AmazonDynamoDBClientBuilder.standard()
-	        	.withCredentials(new AWSStaticCredentialsProvider(credentials))
 	        	.withRegion("us-east-1")
 	            .build();
 
 	        dynamoDB = new DynamoDB(client);
 
-	        String tableName = "Tweets";
-
-	        try {
-	            System.out.println("Attempting to create table; please wait...");
-	            Table table = dynamoDB.createTable(tableName,
-	                Arrays.asList(new KeySchemaElement("id", KeyType.HASH), // Partition
-	                                                                          // key
-	                    new KeySchemaElement("date", KeyType.RANGE)), // Sort key
-	                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.N),
-	                    new AttributeDefinition("date", ScalarAttributeType.S)),
-	                	//new AttributeDefinition("text", ScalarAttributeType.S),
-	                	//new AttributeDefinition("username", ScalarAttributeType.S),
-	                	//new AttributeDefinition("location", ScalarAttributeType.S)),
-	                new ProvisionedThroughput(10L, 10L));
-	            table.waitForActive();
-	            System.out.println("Success.  Table status: " + table.getDescription().getTableStatus());
-
-	        }
-	        catch (Exception e) {
-	            System.err.println("Unable to create table: ");
-	            System.err.println(e.getMessage());
-	        }
+//	        String tableName = "Tweets";
+//
+//	        try {
+//	            System.out.println("Attempting to create table; please wait...");
+//	            Table table = dynamoDB.createTable(tableName,
+//	                Arrays.asList(new KeySchemaElement("id", KeyType.HASH), // Partition
+//	                                                                          // key
+//	                    new KeySchemaElement("date", KeyType.RANGE)), // Sort key
+//	                Arrays.asList(new AttributeDefinition("id", ScalarAttributeType.N),
+//	                    new AttributeDefinition("date", ScalarAttributeType.S)),
+//	                	//new AttributeDefinition("text", ScalarAttributeType.S),
+//	                	//new AttributeDefinition("username", ScalarAttributeType.S),
+//	                	//new AttributeDefinition("location", ScalarAttributeType.S)),
+//	                new ProvisionedThroughput(10L, 10L));
+//	            table.waitForActive();
+//	            System.out.println("Success.  Table status: " + table.getDescription().getTableStatus());
+//
+//	        }
+//	        catch (Exception e) {
+//	            System.err.println("Unable to create table: ");
+//	            System.err.println(e.getMessage());
+//	        }
 
 
 	    }
