@@ -1,7 +1,4 @@
 package edu.nyu.TweetMap.DynampDB;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 
 import java.util.Arrays;
 
