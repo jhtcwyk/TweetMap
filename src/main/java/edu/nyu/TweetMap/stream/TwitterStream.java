@@ -1,6 +1,9 @@
 package edu.nyu.TweetMap.stream;
 
+import java.io.IOException;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import  edu.nyu.TweetMap.TweetUtil.*;
 
@@ -8,7 +11,7 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 import edu.nyu.TweetMap.DynampDB.*;
-
+import edu.nyu.TweetMap.Elasticsearch.*;
 public class TwitterStream implements Runnable{
 	private final twitter4j.TwitterStream stream;
 	private final TwitterStatusListener listener;
@@ -45,6 +48,11 @@ public class TwitterStream implements Runnable{
     }
     
     private void sendToDB(Tweet t) {
-    	TweetDynamoDB.addNewItem(t);
+        try {
+            Elasticsearch.ElasticIndex(new Gson().toJson(t));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
