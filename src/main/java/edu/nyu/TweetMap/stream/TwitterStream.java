@@ -10,7 +10,6 @@ import  edu.nyu.TweetMap.TweetUtil.*;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-import edu.nyu.TweetMap.DynampDB.*;
 import edu.nyu.TweetMap.Elasticsearch.*;
 public class TwitterStream implements Runnable{
 	private final twitter4j.TwitterStream stream;

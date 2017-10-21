@@ -16,7 +16,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.nio.entity.NStringEntity;
 
 public class Elasticsearch {
-    private static final String host = ""; // e.g. my-test-domain.us-east-1.es.amazonaws.com
+    private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
     private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
     public static void ElasticIndex(String json) throws IOException {
         String index = "tweet";
@@ -33,7 +33,7 @@ public class Elasticsearch {
 
         System.out.println(response.toString());
     }
-    public static void ElasticFetch() {
+    public static void ElasticFetch(String lat, String lon) {
         // TODO add asyc
         //Map<String, String> params = Collections.singletonMap("distance", "1km");
         Response response;
@@ -46,8 +46,8 @@ public class Elasticsearch {
                     "        \"geo_distance\": {\n" + 
                     "          \"distance\": \"1km\", \n" + 
                     "          \"location\": { \n" + 
-                    "            \"lat\":  40.715,\n" + 
-                    "            \"lon\": -73.988\n" + 
+                    "            \"lat\":  "+ lat +",\n" + 
+                    "            \"lon\":  "+ lon +"\n" + 
                     "          }\n" + 
                     "        }\n" + 
                     "      }\n" + 
@@ -55,7 +55,7 @@ public class Elasticsearch {
                     "  }\n" + 
                     "}";
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
-            response = client.performRequest("PUT", "/" + "tweet" + "/" + "tweet" + "/" + "1", Collections.<String, String>emptyMap(), entity);
+            response = client.performRequest("POST", "/" + "tweet" + "/" + "tweet" + "/" + "1", Collections.<String, String>emptyMap(), entity);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String temp;
