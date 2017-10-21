@@ -20,26 +20,32 @@ import org.apache.http.nio.entity.NStringEntity;
 
 public class Elasticsearch {
     private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
-    private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
-    public static void ElasticIndex(String json) throws IOException {
+    //private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();//start the client,  has the same lifecycle as the application
+    
+    public static String ElasticIndex(String json) throws IOException {
         String index = "tweets_type";
         String type = "tweet_type";
         
-        System.out.println(json);
+        //System.out.println(json);
 
-        //RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
+        RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
 
         HttpEntity entity = new NStringEntity(json, ContentType.APPLICATION_JSON);
 
         Response response = client.performRequest("POST", "/" + index + "/" + type + "/",
             Collections.<String, String>emptyMap(), entity);
+        
+        client.close();
 
-        System.out.println(response.toString());
+        return response.toString();
     }
-    public static void ElasticFetch(String lat, String lon, String range) {
+    
+    public static String ElasticFetchWithLocation(String lat, String lon, String range) {
         // TODO add asyc
         //Map<String, String> params = Collections.singletonMap("distance", "1km");
         Response response;
+        String ret = new String();
+        
         try {
             //response = client.performRequest("GET", "/tweet/_search/{");
             String str = "{\n" + 
@@ -60,18 +66,36 @@ public class Elasticsearch {
                     "    }\n" + 
                     "  }\n" + 
                     "}";
+            RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
             response = client.performRequest("GET", "/tweets_type/tweet_type/_search", Collections.<String, String>emptyMap(), entity);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            String temp;
-            while((temp = reader.readLine()) != null) {
-                System.out.println(temp);
-            }
+            
+            ret = readResponse(response);
+            client.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
         
+        return ret;
+        
+    }
+    
+    //parse the response to string
+    public static String readResponse(Response response) {
+    	StringBuilder sb = new StringBuilder();
+    	try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			String temp;
+            while((temp = reader.readLine()) != null) {
+                sb.append(temp);
+            }
+            reader.close();           
+		} catch (UnsupportedOperationException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return sb.toString();
     }
    
 }
