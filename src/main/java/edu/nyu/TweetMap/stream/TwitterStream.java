@@ -7,7 +7,7 @@ import  edu.nyu.TweetMap.TweetUtil.*;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-import edu.nyu.TweetMap.DynampDB.*;
+//import edu.nyu.TweetMap.DynampDB.*;
 
 public class TwitterStream implements Runnable{
 	private final twitter4j.TwitterStream stream;
@@ -45,6 +45,6 @@ public class TwitterStream implements Runnable{
     }
     
     private void sendToDB(Tweet t) {
-    	TweetDynamoDB.addNewItem(t);
+    	//TweetDynamoDB.addNewItem(t);
     }
 }
