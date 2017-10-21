@@ -16,7 +16,14 @@ import org.apache.http.HttpHost;
 import org.apache.http.nio.entity.NStringEntity;
 
 public class Elasticsearch {
+<<<<<<< HEAD
     private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
+=======
+
+
+
+    private static final String host = ""; // e.g. my-test-domain.us-east-1.es.amazonaws.com
+>>>>>>> 37169a909ffd7e37cee9a548f270cfbd27ba9fd0
     private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
     public static void ElasticIndex(String json) throws IOException {
         String index = "tweet";

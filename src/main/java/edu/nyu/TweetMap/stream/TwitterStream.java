@@ -10,7 +10,12 @@ import  edu.nyu.TweetMap.TweetUtil.*;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
+<<<<<<< HEAD
+=======
+//import edu.nyu.TweetMap.DynampDB.*;
+>>>>>>> 37169a909ffd7e37cee9a548f270cfbd27ba9fd0
 import edu.nyu.TweetMap.Elasticsearch.*;
+
 public class TwitterStream implements Runnable{
 	private final twitter4j.TwitterStream stream;
 	private final TwitterStatusListener listener;
@@ -25,7 +30,7 @@ public class TwitterStream implements Runnable{
                             status.getText(), date, status.getGeoLocation());
 
                     //System.out.println(tweet.toString());
-                    sendToDB(tweet);
+                    sendToES(tweet);
                 }
             }
 		};
@@ -46,7 +51,8 @@ public class TwitterStream implements Runnable{
         stream.sample("en");
     }
     
-    private void sendToDB(Tweet t) {
+    private void sendToES(Tweet t) {
+
         try {
             Elasticsearch.ElasticIndex(new Gson().toJson(t));
         } catch (IOException e) {
