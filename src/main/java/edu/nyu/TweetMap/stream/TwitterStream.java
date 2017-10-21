@@ -27,7 +27,7 @@ public class TwitterStream implements Runnable{
                             status.getText(), date, status.getGeoLocation());
 
                     //System.out.println(tweet.toString());
-                    sendToDB(tweet);
+                    sendToES(tweet);
                 }
             }
 		};
@@ -48,7 +48,7 @@ public class TwitterStream implements Runnable{
         stream.sample("en");
     }
     
-    private void sendToDB(Tweet t) {
+    private void sendToES(Tweet t) {
 
         try {
             Elasticsearch.ElasticIndex(new Gson().toJson(t));

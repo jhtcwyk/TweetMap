@@ -26,7 +26,7 @@ public class Main {
 //		tweetStream.start();
 
 		
-		RestClient client = RestClient.builder(new HttpHost("search-tweet-eiqxl5nlwk3mpjf7n5alwlcf7m.us-east-1.es.amazonaws.com", 443, "https")).build();
+		RestClient client = RestClient.builder(new HttpHost("", 443, "https")).build();
 		//Map<String, String> params = Collections.singletonMap("date", "true");
 		try {
 			Response response = client.performRequest("POST", "/tweet/tweet/_search");
