@@ -24,7 +24,7 @@ public class Main {
 //		TwitterStream stream = new TwitterStream();
 //		Thread tweetStream = new Thread(stream);
 //		tweetStream.start();
-		Elasticsearch.ElasticFetch("40.715", "-73.988");
+		Elasticsearch.ElasticFetch("29.6185208", "-95.6090009", "100");
 
 	}
 }

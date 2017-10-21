@@ -2,6 +2,9 @@ package edu.nyu.TweetMap.Elasticsearch;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
@@ -19,21 +22,21 @@ public class Elasticsearch {
     private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
     private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
     public static void ElasticIndex(String json) throws IOException {
-        String index = "tweet";
+        String index = "tweets";
         String type = "tweet";
-        String id = "1";
+        
         System.out.println(json);
 
         //RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
 
         HttpEntity entity = new NStringEntity(json, ContentType.APPLICATION_JSON);
 
-        Response response = client.performRequest("PUT", "/" + index + "/" + type + "/" + id,
+        Response response = client.performRequest("POST", "/" + index + "/" + type + "/",
             Collections.<String, String>emptyMap(), entity);
 
         System.out.println(response.toString());
     }
-    public static void ElasticFetch(String lat, String lon) {
+    public static void ElasticFetch(String lat, String lon, String range) {
         // TODO add asyc
         //Map<String, String> params = Collections.singletonMap("distance", "1km");
         Response response;
@@ -41,10 +44,13 @@ public class Elasticsearch {
             //response = client.performRequest("GET", "/tweet/_search/{");
             String str = "{\n" + 
                     "  \"query\": {\n" + 
-                    "    \"filtered\": {\n" + 
-                    "      \"filter\": {\n" + 
+                    "    \"bool\": {\n" + 
+                    "      \"must\": {\n" +                               
+                    "       \"match_all\" : {}\n" + 
+                    "},\n" +
+                    "           \"filter\": {\n"+
                     "        \"geo_distance\": {\n" + 
-                    "          \"distance\": \"1km\", \n" + 
+                    "          \"distance\": \""+ range +"km\", \n" + 
                     "          \"location\": { \n" + 
                     "            \"lat\":  "+ lat +",\n" + 
                     "            \"lon\":  "+ lon +"\n" + 
@@ -55,20 +61,17 @@ public class Elasticsearch {
                     "  }\n" + 
                     "}";
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
-            response = client.performRequest("POST", "/" + "tweet" + "/" + "tweet" + "/" + "1", Collections.<String, String>emptyMap(), entity);
-
+            response = client.performRequest("GET", "/tweets_type/tweet_type/_search", Collections.<String, String>emptyMap(), entity);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
             String temp;
             while((temp = reader.readLine()) != null) {
                 System.out.println(temp);
             }
-//            for (Header h : response.getHeaders()) {
-//                System.out.println(h.toString());
-//            }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
-
+        
     }
+   
 }
