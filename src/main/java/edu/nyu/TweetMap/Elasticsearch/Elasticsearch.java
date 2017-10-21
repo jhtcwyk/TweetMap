@@ -36,10 +36,11 @@ public class Elasticsearch {
 
         System.out.println(response.toString());
     }
-    public static void ElasticFetch(String lat, String lon, String range) {
+    public static String ElasticFetchByDistance(String lat, String lon, String range) {
         // TODO add asyc
         //Map<String, String> params = Collections.singletonMap("distance", "1km");
         Response response;
+        StringBuilder sb = new StringBuilder();
         try {
             //response = client.performRequest("GET", "/tweet/_search/{");
             String str = "{\n" + 
@@ -63,14 +64,38 @@ public class Elasticsearch {
             HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
             response = client.performRequest("GET", "/tweets_type/tweet_type/_search", Collections.<String, String>emptyMap(), entity);
             BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
             String temp;
             while((temp = reader.readLine()) != null) {
+                sb.append(temp);
                 System.out.println(temp);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
+        return sb.toString();
+        
+    }
+    public static String ElasticFetchByKeywords(String keywords) {
+        // TODO add asyc
+        //Map<String, String> params = Collections.singletonMap("distance", "1km");
+        Response response;
+        StringBuilder sb = new StringBuilder();
+        try {
+            
+            response = client.performRequest("GET", "/tweets_type/tweet_type/_search?q=text:"+keywords);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            String temp;
+            while((temp = reader.readLine()) != null) {
+                sb.append(temp);
+                System.out.println(temp);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        return sb.toString();
         
     }
    

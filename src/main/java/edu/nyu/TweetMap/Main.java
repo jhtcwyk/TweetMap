@@ -21,10 +21,11 @@ import edu.nyu.TweetMap.Elasticsearch.*;
 
 public class Main {
 	public static void main(String [] args) {
-		TwitterStream stream = new TwitterStream();
-		Thread tweetStream = new Thread(stream);
-		tweetStream.start();
-		Elasticsearch.ElasticFetch("29.6185208", "-95.6090009", "100");
+//		TwitterStream stream = new TwitterStream();
+//		Thread tweetStream = new Thread(stream);
+//		tweetStream.start();
+		//Elasticsearch.ElasticFetchByDistance("29.6185208", "-95.6090009", "100");
+		Elasticsearch.ElasticFetchByKeywords("a");
 
 	}
 }
