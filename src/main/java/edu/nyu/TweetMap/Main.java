@@ -1,7 +1,7 @@
 package edu.nyu.TweetMap;
 
 import edu.nyu.TweetMap.stream.TwitterStream;
-<<<<<<< HEAD
+
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.apache.http.entity.ContentType;
@@ -16,15 +16,15 @@ import org.apache.http.nio.entity.NStringEntity;
 import edu.nyu.TweetMap.Elasticsearch.*;
 
 
-=======
+
 import edu.nyu.TweetMap.Elasticsearch.*;
->>>>>>> 78caf9f9e6c03baabae935674dd934b530693a4b
+
 public class Main {
 	public static void main(String [] args) {
 //		TwitterStream stream = new TwitterStream();
 //		Thread tweetStream = new Thread(stream);
 //		tweetStream.start();
-<<<<<<< HEAD
+
 		
 		RestClient client = RestClient.builder(new HttpHost("search-tweet-eiqxl5nlwk3mpjf7n5alwlcf7m.us-east-1.es.amazonaws.com", 443, "https")).build();
 		//Map<String, String> params = Collections.singletonMap("date", "true");
@@ -36,8 +36,8 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}//, params);
-=======
+
 		Elasticsearch.ElasticFetch();
->>>>>>> 78caf9f9e6c03baabae935674dd934b530693a4b
+
 	}
 }
