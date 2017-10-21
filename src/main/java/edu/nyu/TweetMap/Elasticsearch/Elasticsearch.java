@@ -22,8 +22,8 @@ public class Elasticsearch {
     private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
     private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
     public static void ElasticIndex(String json) throws IOException {
-        String index = "tweets";
-        String type = "tweet";
+        String index = "tweets_type";
+        String type = "tweet_type";
         
         System.out.println(json);
 
