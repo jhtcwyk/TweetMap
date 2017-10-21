@@ -24,24 +24,7 @@ public class Main {
 //		TwitterStream stream = new TwitterStream();
 //		Thread tweetStream = new Thread(stream);
 //		tweetStream.start();
-<<<<<<< HEAD
 		Elasticsearch.ElasticFetch("40.715", "-73.988");
-=======
 
-		
-		RestClient client = RestClient.builder(new HttpHost("", 443, "https")).build();
-		//Map<String, String> params = Collections.singletonMap("date", "true");
-		try {
-			Response response = client.performRequest("POST", "/tweet/tweet/_search");
-			System.out.println(response.toString());
-			System.out.println(response.getEntity().toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//, params);
-
-		Elasticsearch.ElasticFetch();
-
->>>>>>> 37169a909ffd7e37cee9a548f270cfbd27ba9fd0
 	}
 }
