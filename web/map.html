@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TwittMap</title>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style>
+  #map {
+    height: 100%;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container-fluid" style=" max-width:1600px">
+
+	<div class="row" style="background-color:black;">
+		<div class="col-md-3 column">
+			<h1 class="text-left" style="color:Tomato;">TweetMap</h1>
+		</div>
+		<div class="col-md-3 column">
+			<form role="form">
+				<input type="text" id="searchInput">
+            <input type="button" value="Search" onclick="searchKeyword()">
+			</form>
+		</div>
+		<div class="col-md-6 column" style="color:Tomato;">
+							<ul>
+								<li>
+									You can use the search form to search any word. However, because of limited twitters, we recommend words like "trump", "year" and "new".
+								</li>
+								<li>
+									You also can click the map to fetch twitters around your cursor.(distance = 100km). We recommend you click around North America, Europe and India
+								</li>
+							</ul>
+		</div>
+	</div>
+</div>
+ <div id="map"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var host = window.location.href;
+var markers = [];
+var infoWindow;
+
+function initMap() {
+    infoWindow = new google.maps.InfoWindow({
+        maxWidth: 350
+    });
+    fetchAll();
+}
+function fetchAll(){
+  $.get(host + "DisplayTweetsServlet", function(data){
+      if(data.length == 0)
+        alert("No Data!!!");
+      else
+        putToArray(JSON.parse(data).hits.hits);
+    });
+}
+function searchKeyword(){
+  var keyword = document.getElementById('searchInput');
+  $.get(host + "KeywordsSearchingServlet?keyword="+keyword.value, function(data){
+      if(data.length == 0)
+        alert("No Data!!!");
+      else
+        putToArray(JSON.parse(data).hits.hits);
+    });
+}
+
+/*
+$(document).ready(function(){
+    $("button").click(function(){
+        $.get(host + "DisplayTweetsServlet?init=a", function(data){
+          if(data.length == 0)
+            alert("No Data!!!");
+          else
+            putToArray(JSON.parse(data).hits.hits);
+        });
+    });
+});
+*/
+
+function putToArray(data){
+    if(data.length == 0)
+        alert("No Data!!!");
+  var tweets = [];
+  var field = "_source";
+    for (var i = 0; i < data.length; i++) {
+        var tweet = data[i][field];
+        var lat = tweet.location[0];
+        var lon = tweet.location[1];
+
+        var text = tweet.text;
+        var usernmae = tweet.username;
+        var datetime = tweet.date;
+        tweets.push({
+            "lat": lat
+            , "lon": lon
+            , "text": text
+            , "username": usernmae
+            , "datetime": datetime
+        });
+    }
+    //alert(tweets.length);
+    setMarkers(tweets);
+    drawMap();
+    
+}
+
+function setMarkers(tweets){
+  clearMarkers();
+  for(var i = 0; i < tweets.length; i++){
+    var tweet = tweets[i];
+    var location = new google.maps.LatLng(tweet.lat, tweet.lon);
+    var marker = new google.maps.Marker({
+          position: location,
+          text: tweet.text,
+        });
+    
+        marker.addListener('click', function () {
+            // InfoWindow content
+            var content = '<div id="container">' + this.text+ '</div>';
+            infoWindow.setContent(content);
+            infoWindow.open(this.get('map'), this);
+        });
+    
+      markers.push(marker);
+  }
+}
+function placeMarkerAndPanTo(latLng, map) {
+  
+	$.get(host + "DistanceServlet?lat=" + latLng.lat() + "&lon=" + latLng.lng(), function(data2){
+      if(data2.length == 0)
+        ;
+      else
+        putToArray(JSON.parse(data2).hits.hits);
+    });
+/*  var location = new google.maps.LatLng(56, 56);
+    var marker = new google.maps.Marker({
+      position: location,
+      map: map
+    });
+    map.panTo(location); */
+}
+function setOnMap(map){
+  for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+}
+
+function clearMarkers(){
+  markers = [];
+}
+
+function drawMap(){
+    var uluru = {lat: 40.633607, lng: -73.954997};
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 3,
+      center: uluru
+    });
+    map.addListener('click', function(e) {
+        placeMarkerAndPanTo(e.latLng, map);
+    });
+  setOnMap(map);
+}
+</script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFnK4LpoXNyMadr2W1PnvLif--q1rkpXw&callback=initMap">
+    </script>
+</body>
+</html>
+

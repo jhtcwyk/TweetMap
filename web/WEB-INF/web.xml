@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>TweetMap</display-name>
+  <servlet>
+    <description></description>
+    <display-name>DistanceServlet</display-name>
+    <servlet-name>DistanceServlet</servlet-name>
+    <servlet-class>edu.nyu.TweetMap.Servlet.DistanceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DistanceServlet</servlet-name>
+    <url-pattern>/DistanceServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>KeywordsSearchingServlet</display-name>
+    <servlet-name>KeywordsSearchingServlet</servlet-name>
+    <servlet-class>edu.nyu.TweetMap.Servlet.KeywordsSearchingServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>KeywordsSearchingServlet</servlet-name>
+    <url-pattern>/KeywordsSearchingServlet</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>map.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>DisplayTweetsServlet</display-name>
+    <servlet-name>DisplayTweetsServlet</servlet-name>
+    <servlet-class>edu.nyu.TweetMap.Servlet.DisplayTweetsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DisplayTweetsServlet</servlet-name>
+    <url-pattern>/DisplayTweetsServlet</url-pattern>
+  </servlet-mapping>
+</web-app>

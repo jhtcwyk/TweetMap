@@ -20,7 +20,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.nio.entity.NStringEntity;
 
 public class Elasticsearch {
-    private static final String host = "search-tweets-sc4gugsx3mijjwacjfi62plga4.us-east-1.es.amazonaws.com"; // e.g. my-test-domain.us-east-1.es.amazonaws.com
+    private static final String host = ""; // e.g. my-test-domain.us-east-1.es.amazonaws.com
     //private static final RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();//start the client,  has the same lifecycle as the application
     
     public static String ElasticIndex(String json) throws IOException {
@@ -49,6 +49,8 @@ public class Elasticsearch {
         try {
             //response = client.performRequest("GET", "/tweet/_search/{");
             String str = "{\n" + 
+            		"  \"from\": 0,\n"+
+            		"  \"size\": 100,\n"+
                     "  \"query\": {\n" + 
                     "    \"bool\": {\n" + 
                     "      \"must\": {\n" +                               
@@ -58,8 +60,8 @@ public class Elasticsearch {
                     "        \"geo_distance\": {\n" + 
                     "          \"distance\": \""+ range +"km\", \n" + 
                     "          \"location\": { \n" + 
-                    "            \"lat\":  "+ lat +",\n" + 
-                    "            \"lon\":  "+ lon +"\n" + 
+                    "            \"lat\":  "+ lon +",\n" + 
+                    "            \"lon\":  "+ lat +"\n" + 
                     "          }\n" + 
                     "        }\n" + 
                     "      }\n" + 
@@ -101,8 +103,39 @@ public class Elasticsearch {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } 
+        }
         return sb.toString();      
+    }
+    public static String ElasticFetchAll() {
+        // TODO add asyc
+        //Map<String, String> params = Collections.singletonMap("distance", "1km");
+        Response response;
+        StringBuilder sb = new StringBuilder();
+        
+        try {
+            //response = client.performRequest("GET", "/tweet/_search/{");
+            String str = "{\n" + 
+            		"  \"from\": 0,\n"+
+            		"  \"size\": 100,\n"+
+                    "  \"query\": {\n" +                             
+                    "   \"match_all\" : {}\n" + 
+                    "  }\n" + 
+                    "}";
+            RestClient client = RestClient.builder(new HttpHost(host, 443, "https")).build();
+            HttpEntity entity = new NStringEntity(str, ContentType.APPLICATION_JSON);
+            response = client.performRequest("GET", "/tweets_type/tweet_type/_search", Collections.<String, String>emptyMap(), entity);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            String temp;
+            while((temp = reader.readLine()) != null) {
+                sb.append(temp);
+                System.out.println(temp);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } 
+        return sb.toString();     
     }    
     //parse the response to string
     public static String readResponse(Response response) {
@@ -120,5 +153,4 @@ public class Elasticsearch {
 		}
     	return sb.toString();
     }
-   
 }

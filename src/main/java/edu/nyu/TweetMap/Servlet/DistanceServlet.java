@@ -14,8 +14,10 @@ public class DistanceServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lon");
-        String distance = request.getParameter("distance");
-        String res = Elasticsearch.ElasticFetchByDistance(lat, lon, distance);
+        //String distance = request.getParameter("distance");
+        String res = Elasticsearch.ElasticFetchByDistance(lat, lon, "100");
+        System.out.println("lat: " + lat);
+        System.out.println("lon: " + lon);
         
         try (PrintWriter iter = response.getWriter()){
             iter.println(res);
